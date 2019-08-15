@@ -7,7 +7,14 @@ namespace xadrez_console
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Tabula tab = new Tabula(8, 8);
+
+            Console.ReadLine();
+
+
+
+
+
         }
 
      
