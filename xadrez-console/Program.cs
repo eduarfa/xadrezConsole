@@ -9,6 +9,8 @@ namespace xadrez_console
         {
             Tabula tab = new Tabula(8, 8);
 
+            Tela.imprimirTabula(tab);
+
             Console.ReadLine();
 
 
