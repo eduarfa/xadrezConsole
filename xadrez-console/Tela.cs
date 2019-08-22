@@ -1,11 +1,12 @@
 ﻿using System;
 using Tabuleiro;
+using JogoXadrez;
 
 namespace xadrez_console
 {
     class Tela
     {
-        public static void imprimirTabula(Tabula tab)
+        public static void imprimirTabula(Tabula tab) // statica faz com os métodos possam ser chamados a partir da classe, sem necessitar de instanciação de objeto
         {
             for (int i = 0; i < tab.linhas; i++)
             {
@@ -41,6 +42,14 @@ namespace xadrez_console
                 Console.Write(peca);
                 Console.ForegroundColor = aux;
             }
+        }
+
+        public static PosicaoXadrez lerPosicaoXadrez()
+        {
+            string s = Console.ReadLine();
+            char coluna = s[0];
+            int linha = int.Parse(s[1] + "");
+            return new PosicaoXadrez(coluna, linha);
         }
     }
 }
