@@ -17,11 +17,8 @@ namespace xadrez_console
                 {
                     try
                     {
-                        Console.Clear();
-                        Tela.imprimirTabula(partida.tab);
-                        Console.WriteLine();
-                        Console.WriteLine("Turno: " + partida.turno);
-                        Console.WriteLine("Aguardando jogada: " + partida.jogadorAtual);
+                        Console.Clear(); // limpa tela
+                        Tela.imprimirPartida(partida);
 
                         Console.WriteLine();
                         Console.Write("Origem: ");
@@ -31,7 +28,7 @@ namespace xadrez_console
                         bool[,] posicoesPossiveis = partida.tab.peca(origem).movimentosPossiveis();
 
                         Console.Clear();
-                        Tela.imprimirTabula(partida.tab, posicoesPossiveis);
+                        Tela.imprimirTabula(partida.tab, posicoesPossiveis);  // impressao do tabuleiro que informa casas possiveis para onde a peça pode ir
 
                         Console.WriteLine();
                         Console.Write("Destino: ");
