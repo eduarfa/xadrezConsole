@@ -13,6 +13,7 @@ namespace JogoXadrez
         public bool terminada { get; private set; }
         private HashSet<Peca> pecas;
         private HashSet<Peca> capturadas;
+        public bool xeque { get; private set; }
 
         public PartidaDeXadrez() // construindo a partida de xadrez (construtor)
         {
@@ -20,12 +21,13 @@ namespace JogoXadrez
             turno = 1;
             jogadorAtual = Cor.Branca;
             terminada = false;
+            xeque = false;
             pecas = new HashSet<Peca>();
             capturadas = new HashSet<Peca>();
             colocarPecas();
         }
 
-        public void executaMovimento(Posicao origem, Posicao destino) // método com a lógica de movimento das peças 
+        public Peca executaMovimento(Posicao origem, Posicao destino) // método com a lógica de movimento das peças 
         {
             Peca p = tab.retirarPeca(origem);
             p.incrementarQteMovimentos();
@@ -35,11 +37,37 @@ namespace JogoXadrez
             {
                 capturadas.Add(pecaCapturada);
             }
+            return pecaCapturada;
+        }
+
+        public void desfazMovimento(Posicao origem, Posicao destino, Peca pecaCapturada) // desfaz o movimento feito para em caso de xeque voltar a jogada e não permitir que o jogador se coloque em xeque
+        {
+            Peca p = tab.retirarPeca(destino);
+            p.decrementarQteMovimentos();
+            if (pecaCapturada != null)
+            {
+                tab.colocarPeca(pecaCapturada, destino);
+                capturadas.Remove(pecaCapturada);
+            }
+            tab.colocarPeca(p, origem);
         }
 
         public void realizaJogada(Posicao origem, Posicao destino) // método que executa a jogada de movimento de peça
         {
-            executaMovimento(origem, destino);
+            Peca pecaCapturada = executaMovimento(origem, destino);
+            if (estaEmCheque(jogadorAtual)) // testando se a jogada feita não colocou o rei do jogador em xeque, o que inviabiliza a jogada
+            {
+                desfazMovimento(origem, destino, pecaCapturada);
+                throw new TabuleiroException("Você não pode se colocar em xeque");
+            }
+            if (estaEmCheque(adversaria(jogadorAtual)))
+            {
+                xeque = true;
+            }
+            else
+            {
+                xeque = false;
+            }
             turno++;
             mudaJogador();
         }
@@ -106,6 +134,44 @@ namespace JogoXadrez
                 jogadorAtual = Cor.Branca;
             }
             
+        }
+
+        private Cor adversaria (Cor cor) // retorna a cor adversária
+        {
+            if (cor == Cor.Branca)
+            {
+                return Cor.Preta;
+            }
+            else
+            {
+                return Cor.Branca;
+            }
+        }
+
+        private Peca rei(Cor cor) // retorna a peça rei de determinada cor (assim como sua posicao)
+        {
+            foreach (Peca item in pecasEmJogo(cor))
+            {
+                if (item is Rei)  // se o item da superclasse Peca é da subclasse filha Rei
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        public bool estaEmCheque(Cor cor) // método que testa se um rei está em cheque
+        {
+            Peca R = rei(cor);
+            foreach (Peca item in pecasEmJogo(adversaria(cor)))
+            {
+                bool[,] mat = item.movimentosPossiveis(); // construida uma matriz de movimentos possiveis de todas as peças adversarias do rei ainda em jogo
+                if (mat[R.posicao.linha, R.posicao.coluna])  // se alguma das posicoes da matriz de movimentos possiveis for a posicao do rei, significa que ele está em cheque
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
 
