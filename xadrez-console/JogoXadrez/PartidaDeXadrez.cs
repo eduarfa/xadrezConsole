@@ -68,8 +68,18 @@ namespace JogoXadrez
             {
                 xeque = false;
             }
-            turno++;
-            mudaJogador();
+            if (testeXequeMate(adversaria(jogadorAtual)))
+            {
+                terminada = true;
+            }
+            else
+            {
+                turno++;
+                mudaJogador();
+            }
+            
+            
+            
         }
 
         public void validarPosicaoDeOrigem(Posicao pos) // verifica se a posicao de origem contém uma peça que pode ser movimentada
@@ -172,6 +182,38 @@ namespace JogoXadrez
                 }
             }
             return false;
+        }
+
+
+        public bool testeXequeMate(Cor cor)
+        {
+            if (!estaEmCheque(cor))
+            {
+                return false;
+            }
+            foreach (Peca item in pecasEmJogo(cor))
+            {
+                bool[,] mat = item.movimentosPossiveis();
+                for (int i = 0; i < tab.linhas; i++)
+                {
+                    for (int j = 0; j < tab.colunas; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Posicao origem = item.posicao;
+                            Posicao destino = new Posicao(i, j);
+                            Peca pecaCapturada = executaMovimento(origem, destino);
+                            bool testeXeque = estaEmCheque(cor);
+                            desfazMovimento(origem, destino, pecaCapturada);
+                            if (!testeXeque)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
 
