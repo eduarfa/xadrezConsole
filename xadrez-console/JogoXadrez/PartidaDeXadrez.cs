@@ -100,7 +100,7 @@ namespace JogoXadrez
 
         public void validarPosicaoDeDestino(Posicao origem, Posicao destino) // verifica se a posicao de destino num movimento é uma posicao valida
         {
-            if (!tab.peca(origem).podeMoverPara(destino))
+            if (!tab.peca(origem).movimentoPossivel(destino))
             {
                 throw new TabuleiroException("Posição de destino Inválida");
             }
