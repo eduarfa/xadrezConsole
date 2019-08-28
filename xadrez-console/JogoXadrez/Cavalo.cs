@@ -2,18 +2,16 @@
 
 namespace JogoXadrez
 {
-    class Rei : Peca
+    class Cavalo : Peca
     {
-        private PartidaDeXadrez partida;
 
-        public Rei(Tabula tab, Cor cor, PartidaDeXadrez partida) : base(tab, cor)
+        public Cavalo(Tabula tab, Cor cor) : base(tab, cor)
         {
-            this.partida = partida;
         }
 
         public override string ToString()
         {
-            return "R";
+            return "C";
         }
 
         private bool podeMover(Posicao pos)
@@ -28,42 +26,42 @@ namespace JogoXadrez
 
             Posicao pos = new Posicao(0, 0);
 
-            pos.definirPosicao(posicao.linha - 1, posicao.coluna); // checando posicao norte do rei
+            pos.definirPosicao(posicao.linha - 2, posicao.coluna + 1); // 
             if (tabu.posicaoValida(pos) && podeMover(pos))
             {
                 mat[pos.linha, pos.coluna] = true;
             }
-            pos.definirPosicao(posicao.linha - 1, posicao.coluna + 1); // checando posicao nordeste
+            pos.definirPosicao(posicao.linha - 2, posicao.coluna - 1); // 
             if (tabu.posicaoValida(pos) && podeMover(pos))
             {
                 mat[pos.linha, pos.coluna] = true;
             }
-            pos.definirPosicao(posicao.linha, posicao.coluna + 1); // checando posicao direita do rei
+            pos.definirPosicao(posicao.linha + 2, posicao.coluna + 1); // 
             if (tabu.posicaoValida(pos) && podeMover(pos))
             {
                 mat[pos.linha, pos.coluna] = true;
             }
-            pos.definirPosicao(posicao.linha + 1, posicao.coluna + 1); // checando posicao sudeste do rei
+            pos.definirPosicao(posicao.linha + 2, posicao.coluna - 1); // 
             if (tabu.posicaoValida(pos) && podeMover(pos))
             {
                 mat[pos.linha, pos.coluna] = true;
             }
-            pos.definirPosicao(posicao.linha + 1, posicao.coluna); // checando posicao sul do rei
+            pos.definirPosicao(posicao.linha + 1, posicao.coluna + 2); // 
             if (tabu.posicaoValida(pos) && podeMover(pos))
             {
                 mat[pos.linha, pos.coluna] = true;
             }
-            pos.definirPosicao(posicao.linha + 1, posicao.coluna - 1); // checando posicao sudoeste do rei
+            pos.definirPosicao(posicao.linha + 1, posicao.coluna - 2); // 
             if (tabu.posicaoValida(pos) && podeMover(pos))
             {
                 mat[pos.linha, pos.coluna] = true;
             }
-            pos.definirPosicao(posicao.linha, posicao.coluna - 1); // checando posicao oeste do rei
+            pos.definirPosicao(posicao.linha - 1, posicao.coluna - 2); // 
             if (tabu.posicaoValida(pos) && podeMover(pos))
             {
                 mat[pos.linha, pos.coluna] = true;
             }
-            pos.definirPosicao(posicao.linha - 1, posicao.coluna - 1); // checando posicao noroeste do rei
+            pos.definirPosicao(posicao.linha - 1, posicao.coluna + 2); // 
             if (tabu.posicaoValida(pos) && podeMover(pos))
             {
                 mat[pos.linha, pos.coluna] = true;
