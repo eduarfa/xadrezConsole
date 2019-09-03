@@ -37,6 +37,24 @@ namespace JogoXadrez
             {
                 capturadas.Add(pecaCapturada);
             }
+
+            // #jogadaespecial Roque
+            if (p is Rei && destino.coluna == origem.coluna + 2)  // roque pequeno
+            {
+                Posicao origemTorre = new Posicao(origem.linha, origem.coluna + 3);
+                Posicao destinoTorre = new Posicao(origem.linha, origem.coluna + 1);
+                Peca T = tab.retirarPeca(origemTorre);
+                T.incrementarQteMovimentos();
+                tab.colocarPeca(T, destinoTorre);
+            }
+            if (p is Rei && destino.coluna == origem.coluna - 2)  // roque grande
+            {
+                Posicao origemTorre = new Posicao(origem.linha, origem.coluna - 4);  
+                Posicao destinoTorre = new Posicao(origem.linha, origem.coluna - 1);
+                Peca T = tab.retirarPeca(origemTorre);
+                T.incrementarQteMovimentos();
+                tab.colocarPeca(T, destinoTorre);
+            }
             return pecaCapturada;
         }
 
@@ -50,6 +68,22 @@ namespace JogoXadrez
                 capturadas.Remove(pecaCapturada);
             }
             tab.colocarPeca(p, origem);
+            if (p is Rei && destino.coluna == origem.coluna + 2)  // roque pequeno
+            {
+                Posicao origemTorre = new Posicao(origem.linha, origem.coluna + 3);
+                Posicao destinoTorre = new Posicao(origem.linha, origem.coluna + 1);
+                Peca T = tab.retirarPeca(destinoTorre);
+                T.decrementarQteMovimentos();
+                tab.colocarPeca(T, origemTorre);
+            }
+            if (p is Rei && destino.coluna == origem.coluna - 2)  // roque grande
+            {
+                Posicao origemTorre = new Posicao(origem.linha, origem.coluna - 4);
+                Posicao destinoTorre = new Posicao(origem.linha, origem.coluna - 1);
+                Peca T = tab.retirarPeca(destinoTorre);
+                T.decrementarQteMovimentos();
+                tab.colocarPeca(T, origemTorre);
+            }
         }
 
         public void realizaJogada(Posicao origem, Posicao destino) // método que executa a jogada de movimento de peça
