@@ -56,6 +56,20 @@ namespace JogoXadrez
                 {
                     mat[pos.linha, pos.coluna] = true;
                 }
+                // #jogadaespecial En Passant 
+                if (posicao.linha == 3)
+                {
+                    Posicao esq = new Posicao(posicao.linha, posicao.coluna - 1);
+                    if (tabu.posicaoValida(esq) && existeInimigo(esq) && tabu.peca(esq) == partida.vulneralEnPassant)
+                    {
+                        mat[esq.linha - 1, esq.coluna] = true;
+                    }
+                    Posicao dir = new Posicao(posicao.linha, posicao.coluna + 1);
+                    if (tabu.posicaoValida(dir) && existeInimigo(dir) && tabu.peca(dir) == partida.vulneralEnPassant)
+                    {
+                        mat[dir.linha - 1, dir.coluna] = true;
+                    }
+                }
             }
             else
             {
@@ -78,6 +92,20 @@ namespace JogoXadrez
                 if (tabu.posicaoValida(pos) && existeInimigo(pos))
                 {
                     mat[pos.linha, pos.coluna] = true;
+                }
+                // #jogadaespecial En Passant
+                if (posicao.linha == 4)
+                {
+                    Posicao esq = new Posicao(posicao.linha, posicao.coluna - 1);
+                    if (tabu.posicaoValida(esq) && existeInimigo(esq) && tabu.peca(esq) == partida.vulneralEnPassant)
+                    {
+                        mat[esq.linha + 1, esq.coluna] = true;
+                    }
+                    Posicao dir = new Posicao(posicao.linha, posicao.coluna + 1);
+                    if (tabu.posicaoValida(dir) && existeInimigo(dir) && tabu.peca(dir) == partida.vulneralEnPassant)
+                    {
+                        mat[dir.linha + 1, dir.coluna] = true;
+                    }
                 }
             }
             return mat;
